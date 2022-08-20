@@ -67,6 +67,8 @@ Which one runs faster?
 
 */
 
+// Side effects functions are useful in more situations. Pure functions run faster
+
 function reverseArray(array) {
   let result = [];
 
@@ -80,16 +82,19 @@ function reverseArrayInPlace(array) {
   let j = 0;
   let temp;
   for (let i = array.length - 1; i >= 0; i--) {
-    array[j] = temp;
-    array[j] = array[i];
-    array[i] = temp;
+    if (j < array.length / 2) {
+      temp = array[j];
+      array[j] = array[i];
+      array[i] = temp;
+    }
     j++;
   }
   return array;
 }
 
-let array1 = ["s", "e", "r", "d", "n", "a"];
-console.log(reverseArrayInPlace(array1));
+// let array1 = ["s", "e", "r", "d", "n", "a"];
+// let array2 = [4, "a", "a", "m", 4];
+// console.log(reverseArrayInPlace(array2));
 
 /*
 
@@ -106,6 +111,40 @@ If you haven’t already, also write a recursive version of nth.
 
 
 */
+
+function arrayToList(array) {
+  result = {};
+  last = {};
+  temp = 0;
+
+  for (let i = 0; i < array.length; i++) {
+    temp = array[i];
+    array[i] = {};
+    array[i].value = temp;
+  }
+  for (let i = array.length - 1; i >= 0; i--) {
+    array[i + 1] ? (array[i].rest = array[i + 1]) : (array[i].rest = null);
+  }
+  result = array[0];
+  return result;
+}
+function listToArray(list) {
+  let array = [];
+  for (let node = list; node; node = node.rest) {
+    array.push(node.value);
+  }
+  return array;
+}
+
+function prepend(value, list) {
+  return { value, rest: list };
+}
+
+function nth(list, n) {
+  if (!list) return undefined;
+  else if (n == 0) return list.value;
+  else return nth(list.rest, n - 1);
+}
 
 /*
 
